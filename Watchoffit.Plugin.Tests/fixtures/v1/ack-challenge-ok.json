@@ -1,0 +1,20 @@
+{
+  "kind": "ack",
+  "header": {
+    "version": 1,
+    "kind": "ack",
+    "id": "ack_challenge_01HZ0001",
+    "correlationId": "cmd_challenge_01HZ0001",
+    "sequence": 1,
+    "timestamp": "2026-08-27T10:01:01.000Z",
+    "serverConnectionId": "scn_01HZ0001EXAMPLE"
+  },
+  "payload": {
+    "commandId": "cmd_challenge_01HZ0001",
+    "status": "ok",
+    "serverConnectionId": "scn_01HZ0001EXAMPLE",
+    "watchoffitServerName": "Family Watchoffit",
+    "pairingCode": "AB12CD",
+    "expiresAt": "2026-08-27T10:11:00.000Z"
+  }
+}

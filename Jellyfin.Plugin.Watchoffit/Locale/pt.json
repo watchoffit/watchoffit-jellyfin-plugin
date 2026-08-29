@@ -1,0 +1,23 @@
+{
+  "connected": "Ligado",
+  "connectedAt": "Ligado em",
+  "connectToWatchoffit": "Ligar ao Watchoffit",
+  "connectionFailed": "Falha na ligação: {0}",
+  "connectionId": "ID da ligação",
+  "connectionString": "String de ligação do Watchoffit",
+  "connectionStringHint": "Copie a string de ligação do Watchoffit. Expira após 10 minutos.",
+  "connectionStringRequired": "Cole a string de ligação do Watchoffit",
+  "credential": "Credencial",
+  "disconnect": "Desligar",
+  "disconnectFailed": "Falha ao desligar: {0}",
+  "failedToLoadStatus": "Não foi possível carregar o estado de associação: HTTP {0}",
+  "networkError": "Erro de rede: {0}",
+  "pluginProtocol": "Plugin do protocolo v1",
+  "server": "Servidor",
+  "watchoffitServer": "Servidor Watchoffit",
+  "watchoffitServerUrl": "URL do servidor Watchoffit",
+  "status": "Estado",
+  "loading": "A carregar...",
+  "docs": "documentação",
+  "protocolDescription": "para o formato dos dados e o modelo de segurança."
+}

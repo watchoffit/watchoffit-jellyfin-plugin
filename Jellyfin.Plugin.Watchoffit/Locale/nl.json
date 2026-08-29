@@ -1,0 +1,23 @@
+{
+  "connected": "Verbonden",
+  "connectedAt": "Verbonden op",
+  "connectToWatchoffit": "Verbinden met Watchoffit",
+  "connectionFailed": "Verbinding mislukt: {0}",
+  "connectionId": "Verbindings-ID",
+  "connectionString": "Watchoffit-verbindingsreeks",
+  "connectionStringHint": "Kopieer de verbindingsreeks uit Watchoffit. Deze verloopt na 10 minuten.",
+  "connectionStringRequired": "Plak de verbindingsreeks uit Watchoffit",
+  "credential": "Inloggegeven",
+  "disconnect": "Verbinding verbreken",
+  "disconnectFailed": "Verbinding verbreken mislukt: {0}",
+  "failedToLoadStatus": "Koppelstatus laden mislukt: HTTP {0}",
+  "networkError": "Netwerkfout: {0}",
+  "pluginProtocol": "Plugin voor protocol v1",
+  "server": "Server",
+  "watchoffitServer": "Watchoffit-server",
+  "watchoffitServerUrl": "URL van Watchoffit-server",
+  "status": "Status",
+  "loading": "Laden...",
+  "docs": "documentatie",
+  "protocolDescription": "voor het gegevensformaat en beveiligingsmodel."
+}

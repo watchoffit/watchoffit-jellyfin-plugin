@@ -1,0 +1,17 @@
+{
+  "kind": "ack",
+  "header": {
+    "version": 1,
+    "kind": "ack",
+    "id": "ack_01HZ0001",
+    "correlationId": "cmd_01HZ0001",
+    "sequence": 1,
+    "timestamp": "2026-08-26T20:34:42.000Z",
+    "serverConnectionId": "scn_01HZ0001"
+  },
+  "payload": {
+    "commandId": "cmd_01HZ0001",
+    "status": "ok",
+    "note": "applied"
+  }
+}

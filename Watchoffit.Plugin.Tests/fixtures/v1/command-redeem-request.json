@@ -1,0 +1,22 @@
+{
+  "kind": "command",
+  "header": {
+    "version": 1,
+    "kind": "command",
+    "id": "cmd_redeem_01HZ0001",
+    "sequence": 2,
+    "timestamp": "2026-08-27T10:02:00.000Z",
+    "serverConnectionId": "scn_01HZ0001EXAMPLE",
+    "capabilities": {
+      "minProtocolVersion": 1,
+      "maxProtocolVersion": 1,
+      "maxPayloadBytes": 65536,
+      "maxBatchSize": 50
+    }
+  },
+  "payload": {
+    "kind": "redeem_request",
+    "pairingCode": "AB12CD",
+    "jellyfinServerId": "jf_server_01HZ0001LOCAL"
+  }
+}

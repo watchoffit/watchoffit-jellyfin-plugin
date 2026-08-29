@@ -1,0 +1,85 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <RootNamespace>Jellyfin.Plugin.Watchoffit</RootNamespace>
+    <AssemblyName>Jellyfin.Plugin.Watchoffit</AssemblyName>
+    <PackageId>Jellyfin.Plugin.Watchoffit</PackageId>
+    <Product>Watchoffit Jellyfin Plugin</Product>
+    <Description>Pairs Watchoffit with Jellyfin over a custom in-process protocol. Replaces the Webhook plugin, API key, and Quick Connect flow.</Description>
+    <Authors>Watchoffit contributors</Authors>
+    <Copyright>Copyright (C) 2026 Watchoffit contributors</Copyright>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>13.0</LangVersion>
+    <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+    <CodeAnalysisRuleSet>../jellyfin.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Jellyfin.Controller" Version="10.11.11" >
+      <ExcludeAssets>runtime</ExcludeAssets>
+    </PackageReference>
+    <PackageReference Include="Jellyfin.Model" Version="10.11.11">
+      <ExcludeAssets>runtime</ExcludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SerilogAnalyzer" Version="0.15.0" PrivateAssets="All" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556" PrivateAssets="All" />
+    <PackageReference Include="SmartAnalyzers.MultithreadingAnalyzer" Version="1.1.31" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Configuration\watchoffitConfigPage.html" />
+    <EmbeddedResource Include="Configuration\watchoffitConfigPage.html" />
+    <EmbeddedResource Include="Locale\*.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!--
+      System.Security.Cryptography.ProtectedData is Windows-only. The
+      reference is wrapped in a Condition so the Linux build does not
+      pull the package or try to load its native dependency. The
+      CredentialProtectorFactory uses OperatingSystem.IsWindows() at
+      runtime to skip construction of DPAPICredentialProtector on
+      other platforms.
+    -->
+    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="9.0.0" Condition="'$(OS)' == 'Windows_NT'" />
+  </ItemGroup>
+
+  <!--
+    StyleCop overrides for the Watchoffit plugin.
+
+    SA1402 (one type per file): the v1 protocol mirror contains many small
+    records that read better as grouped files (per-kind payload records
+    together, per-converter records together). Splitting them into 1-type
+    files would duplicate file headers without improving readability.
+
+    SA1503 (braces should not be omitted): we deliberately allow braces-less
+    single-statement branches in small private helpers to keep them on one
+    line. The C# team has been softening this rule since C# 9.
+
+    SA1408 (ternary precedence): false positive on `value switch { ... }`
+    expressions inside property initializers.
+
+    SA1623 (Gets/Sets prefix): record init-only properties are de-facto
+    read-only after construction. "Gets" is technically correct but reads
+    awkwardly for the v1 payload mirror, which is mostly a DTO layer.
+
+    CA1034 (nested type visibility): we use private nested records for
+    discriminated unions (Ok / Failure) on the parse result. Hiding them
+    behind a private constructor prevents accidental inheritance.
+  -->
+  <PropertyGroup>
+    <NoWarn>$(NoWarn);SA1402;SA1503;SA1408;SA1623;CA1034;SA1649;SA1501;SA1316;SA1201;SA1203;SA1642;CA1823;CA1001</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Jellyfin.Plugin.Watchoffit.Tests" />
+  </ItemGroup>
+
+</Project>

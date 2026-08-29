@@ -1,0 +1,20 @@
+{
+  "kind": "ack",
+  "header": {
+    "version": 1,
+    "kind": "ack",
+    "id": "ack_redeem_01HZ0001",
+    "correlationId": "cmd_redeem_01HZ0001",
+    "sequence": 2,
+    "timestamp": "2026-08-27T10:02:01.000Z",
+    "serverConnectionId": "scn_01HZ0001EXAMPLE"
+  },
+  "payload": {
+    "commandId": "cmd_redeem_01HZ0001",
+    "status": "ok",
+    "serverConnectionId": "scn_01HZ0001EXAMPLE",
+    "watchoffitServerName": "Family Watchoffit",
+    "issuedAt": "2026-08-27T10:02:01.000Z",
+    "credential": "cred_01HZ0001SECRET"
+  }
+}

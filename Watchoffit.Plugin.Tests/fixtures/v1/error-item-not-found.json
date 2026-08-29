@@ -1,0 +1,17 @@
+{
+  "kind": "error",
+  "header": {
+    "version": 1,
+    "kind": "error",
+    "id": "err_01HZ0001",
+    "correlationId": "cmd_01HZ0003",
+    "sequence": 2,
+    "timestamp": "2026-08-26T20:36:01.000Z",
+    "serverConnectionId": "scn_01HZ0001"
+  },
+  "payload": {
+    "commandId": "cmd_01HZ0003",
+    "code": "ITEM_NOT_FOUND",
+    "message": "no such item"
+  }
+}

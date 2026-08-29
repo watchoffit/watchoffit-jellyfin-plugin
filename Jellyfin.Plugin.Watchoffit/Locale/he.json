@@ -1,0 +1,23 @@
+{
+  "connected": "מחובר",
+  "connectedAt": "החיבור בוצע ב־",
+  "connectToWatchoffit": "התחברות ל־Watchoffit",
+  "connectionFailed": "החיבור נכשל: {0}",
+  "connectionId": "מזהה חיבור",
+  "connectionString": "מחרוזת חיבור ל־Watchoffit",
+  "connectionStringHint": "העתק את מחרוזת החיבור מ־Watchoffit. תוקפה פג לאחר 10 דקות.",
+  "connectionStringRequired": "הדבק את מחרוזת החיבור מ־Watchoffit",
+  "credential": "פרטי התחברות",
+  "disconnect": "ניתוק",
+  "disconnectFailed": "הניתוק נכשל: {0}",
+  "failedToLoadStatus": "טעינת מצב הצימוד נכשלה: HTTP {0}",
+  "networkError": "שגיאת רשת: {0}",
+  "pluginProtocol": "תוסף לפרוטוקול v1",
+  "server": "שרת",
+  "watchoffitServer": "שרת Watchoffit",
+  "watchoffitServerUrl": "כתובת שרת Watchoffit",
+  "status": "מצב",
+  "loading": "טוען...",
+  "docs": "תיעוד",
+  "protocolDescription": "עבור פורמט הנתונים ומודל האבטחה."
+}

@@ -1,0 +1,23 @@
+{
+  "connected": "接続済み",
+  "connectedAt": "接続日時",
+  "connectToWatchoffit": "Watchoffit に接続",
+  "connectionFailed": "接続に失敗しました: {0}",
+  "connectionId": "接続 ID",
+  "connectionString": "Watchoffit 接続文字列",
+  "connectionStringHint": "Watchoffit から接続文字列をコピーしてください。10 分後に期限切れになります。",
+  "connectionStringRequired": "Watchoffit の接続文字列を貼り付けてください",
+  "credential": "認証情報",
+  "disconnect": "接続を解除",
+  "disconnectFailed": "接続の解除に失敗しました: {0}",
+  "failedToLoadStatus": "ペアリング状態を読み込めませんでした: HTTP {0}",
+  "networkError": "ネットワークエラー: {0}",
+  "pluginProtocol": "プロトコル v1 プラグイン",
+  "server": "サーバー",
+  "watchoffitServer": "Watchoffit サーバー",
+  "watchoffitServerUrl": "Watchoffit サーバー URL",
+  "status": "状態",
+  "loading": "読み込み中...",
+  "docs": "ドキュメント",
+  "protocolDescription": "通信形式とセキュリティモデルについて。"
+}

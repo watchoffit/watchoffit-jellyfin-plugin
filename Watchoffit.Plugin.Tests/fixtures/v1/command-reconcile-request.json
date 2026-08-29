@@ -1,0 +1,24 @@
+{
+  "kind": "command",
+  "header": {
+    "version": 1,
+    "kind": "command",
+    "id": "cmd_01HZ0005",
+    "sequence": 5,
+    "timestamp": "2026-08-26T20:38:00.000Z",
+    "serverConnectionId": "scn_01HZ0001",
+    "capabilities": {
+      "minProtocolVersion": 1,
+      "maxProtocolVersion": 1,
+      "maxPayloadBytes": 65536,
+      "maxBatchSize": 50
+    }
+  },
+  "payload": {
+    "kind": "reconcile_request",
+    "jellyfinItemId": "jf-movie-1",
+    "watchoffitUserId": "u_01HZ0001",
+    "mediaKind": "movie",
+    "reason": "post_restart"
+  }
+}

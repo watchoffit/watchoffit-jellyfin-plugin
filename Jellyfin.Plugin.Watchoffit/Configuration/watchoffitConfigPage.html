@@ -1,0 +1,234 @@
+<div id="watchoffitConfigurationPage" data-role="page" class="page type-interior pluginConfigurationPage" data-require="emby-input,emby-button">
+  <div data-role="content">
+    <div class="content-primary">
+      <h2 class="sectionTitle">Watchoffit</h2>
+
+    <div id="watchoffitStatus" class="fieldDescription" data-state="loading" data-localize="loading">Loading...</div>
+
+    <div id="watchoffitNotPairedView" style="display: none;">
+      <form id="watchoffitPairingForm">
+        <div class="inputContainer">
+          <label class="inputLabel inputLabelUnfocused" for="watchoffitConnectionString" data-localize="connectionString">Watchoffit connection string</label>
+          <input is="emby-input" id="watchoffitConnectionString" name="watchoffitConnectionString" autocomplete="off" spellcheck="false" required />
+          <div class="fieldDescription" data-localize="connectionStringHint">Copy the connection string from Watchoffit. It expires after 10 minutes.</div>
+        </div>
+
+        <div class="formButtonGroup">
+          <button is="emby-button" type="button" id="watchoffitConnectButton" class="raised button-submit block">
+            <span data-localize="connectToWatchoffit">Connect to Watchoffit</span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div id="watchoffitPairedView" style="display: none;">
+      <div class="paperList">
+        <div class="listItem"><span class="listItemBodyText"><span data-localize="status">Status</span>: <strong data-localize="connected">Connected</strong></span></div>
+        <div class="listItem"><span class="listItemBodyText"><span data-localize="server">Server</span>: <span id="watchoffitServerName">-</span></span></div>
+        <div class="listItem"><span class="listItemBodyText"><span data-localize="connectionId">Connection id</span>: <span id="watchoffitServerConnectionId">-</span></span></div>
+        <div class="listItem"><span class="listItemBodyText"><span data-localize="credential">Credential</span>: <span id="watchoffitCredentialMasked">-</span></span></div>
+        <div class="listItem"><span class="listItemBodyText"><span data-localize="connectedAt">Connected at</span>: <span id="watchoffitCreatedAt">-</span></span></div>
+        <div class="listItem"><span class="listItemBodyText"><span data-localize="lastContact">Last contact</span>: <span id="watchoffitLastPingAt">-</span></span></div>
+      </div>
+
+      <div class="formButtonGroup">
+        <button is="emby-button" type="button" id="watchoffitDisconnectButton" class="raised button-cancel block">
+          <span data-localize="disconnect">Disconnect</span>
+        </button>
+      </div>
+    </div>
+
+    <div id="watchoffitErrorView" class="fieldDescription" style="display: none; color: #c00;"></div>
+
+    <p class="fieldDescription" style="margin-top: 1.5em;">
+      <span data-localize="pluginProtocol">Protocol v1. Plugin {0}. See</span> <span id="watchoffitPluginVersion">1.0.0.0</span>. <a is="emby-linkbutton" class="button-link" href="https://github.com/watchoffit/watchoffit-jellyfin-plugin/blob/main/docs/protocol-v1.md" target="_blank" data-localize="docs">docs</a> <span data-localize="protocolDescription">for the wire format and security model.</span>
+    </p>
+    </div>
+  </div>
+<script>
+(function () {
+  "use strict";
+
+  var page = document.querySelector("#watchoffitConfigurationPage");
+  var initialized = false;
+
+  page.addEventListener("pageshow", function () {
+    if (initialized) {
+      return;
+    }
+
+    initialized = true;
+    init(page);
+  });
+
+  function init(pageElement) {
+  var statusEl = pageElement.querySelector("#watchoffitStatus");
+  var notPairedView = pageElement.querySelector("#watchoffitNotPairedView");
+  var pairedView = pageElement.querySelector("#watchoffitPairedView");
+  var errorView = pageElement.querySelector("#watchoffitErrorView");
+  var connectionStringEl = pageElement.querySelector("#watchoffitConnectionString");
+  var connectButton = pageElement.querySelector("#watchoffitConnectButton");
+  var disconnectButton = pageElement.querySelector("#watchoffitDisconnectButton");
+  var serverNameEl = pageElement.querySelector("#watchoffitServerName");
+  var serverConnectionIdEl = pageElement.querySelector("#watchoffitServerConnectionId");
+  var credentialMaskedEl = pageElement.querySelector("#watchoffitCredentialMasked");
+  var createdAtEl = pageElement.querySelector("#watchoffitCreatedAt");
+  var lastPingAtEl = pageElement.querySelector("#watchoffitLastPingAt");
+
+  var translations = {};
+
+  function translate(key, fallback) {
+    return translations[key] || fallback;
+  }
+
+  function localizeText(value) {
+    return value.replace(/\{0\}/g, "");
+  }
+
+  async function loadTranslations() {
+    try {
+      var response = await fetch(ApiClient.getUrl("Plugins/Watchoffit/Localization?locale=" + encodeURIComponent(navigator.language || "en")), {
+        credentials: "include",
+        headers: requestHeaders({ "Accept": "application/json" })
+      });
+      if (!response.ok) return;
+      translations = await response.json();
+      pageElement.querySelectorAll("[data-localize]").forEach(function (element) {
+        var key = element.getAttribute("data-localize");
+        element.textContent = localizeText(translate(key, element.textContent));
+      });
+    } catch (_) {
+      // The English markup is a deliberate offline/failure fallback.
+    }
+  }
+
+  function loadDeepLinkValue() {
+    var hash = window.location.hash || "";
+    var separator = hash.indexOf("?");
+    if (separator < 0) return;
+    var params = new URLSearchParams(hash.slice(separator + 1));
+    var value = params.get("pair");
+    if (!value) return;
+    connectionStringEl.value = value;
+    params.delete("pair");
+    var nextHash = hash.slice(0, separator) + (params.toString() ? "?" + params.toString() : "");
+    window.history.replaceState(null, "", window.location.pathname + window.location.search + nextHash);
+  }
+
+  function requestHeaders(extra) {
+    var headers = extra || {};
+    var token = typeof ApiClient.accessToken === "function" ? ApiClient.accessToken() : null;
+    if (token) {
+      headers["X-Emby-Token"] = token;
+    }
+    return headers;
+  }
+
+  function show(state) {
+    notPairedView.style.display = state === "not_paired" ? "" : "none";
+    pairedView.style.display = state === "paired" ? "" : "none";
+    statusEl.style.display = "none";
+  }
+
+  function setError(message) {
+    errorView.textContent = message || "";
+    errorView.style.display = message ? "" : "none";
+  }
+
+  function renderStatus(state) {
+    if (state === "paired") {
+      show("paired");
+    } else if (state === "none" || state === "revoked") {
+      show("not_paired");
+      connectButton.querySelector("span").textContent = translate("connectToWatchoffit", "Connect to Watchoffit");
+    } else {
+      statusEl.textContent = translate("loading", "Loading...");
+    }
+  }
+
+  async function refresh() {
+    try {
+      var response = await fetch(ApiClient.getUrl("Plugins/Watchoffit/Pairing/Status"), {
+        credentials: "include",
+        headers: requestHeaders({ "Accept": "application/json" })
+      });
+      if (!response.ok) {
+        setError(translate("failedToLoadStatus", "Failed to load pairing status: HTTP {0}").replace("{0}", response.status));
+        return;
+      }
+      var body = await response.json();
+      if (body.state === "paired") {
+        serverNameEl.textContent = body.watchoffitServerName || "-";
+        serverConnectionIdEl.textContent = body.serverConnectionId || "-";
+        credentialMaskedEl.textContent = body.credentialMasked || "-";
+        createdAtEl.textContent = body.createdAt || "-";
+        lastPingAtEl.textContent = body.lastPingAt || "-";
+        show("paired");
+      } else {
+        renderStatus(body.state);
+      }
+    } catch (err) {
+      setError(translate("networkError", "Network error: {0}").replace("{0}", err.message));
+    }
+  }
+
+  async function postForm(path, fields) {
+    var form = new FormData();
+    for (var key in fields) {
+      if (Object.prototype.hasOwnProperty.call(fields, key)) {
+        form.append(key, fields[key]);
+      }
+    }
+    var response = await fetch(ApiClient.getUrl(path), {
+      method: "POST",
+      credentials: "include",
+      headers: requestHeaders(),
+      body: form
+    });
+    return response;
+  }
+
+  connectButton.addEventListener("click", async function () {
+    setError("");
+    var connectionString = (connectionStringEl.value || "").trim();
+    if (!connectionString) {
+      setError(translate("connectionStringRequired", "Paste the connection string from Watchoffit"));
+      return;
+    }
+
+    connectButton.disabled = true;
+    try {
+      var connectResp = await postForm("Plugins/Watchoffit/Pairing/Connect", { connectionString: connectionString });
+      var connectBody = await connectResp.json();
+      if (connectBody.errorCode) {
+        setError("[" + connectBody.errorCode + "] " + (connectBody.errorMessage || ""));
+        return;
+      }
+      connectionStringEl.value = "";
+      await refresh();
+    } catch (err) {
+      setError(translate("connectionFailed", "Connection failed: {0}").replace("{0}", err.message));
+    } finally {
+      connectButton.disabled = false;
+    }
+  });
+
+  disconnectButton.addEventListener("click", async function () {
+    setError("");
+    disconnectButton.disabled = true;
+    try {
+      await postForm("Plugins/Watchoffit/Pairing/Disconnect", {});
+      await refresh();
+    } catch (err) {
+      setError(translate("disconnectFailed", "Disconnect failed: {0}").replace("{0}", err.message));
+    } finally {
+      disconnectButton.disabled = false;
+    }
+  });
+
+  loadDeepLinkValue();
+  loadTranslations().then(refresh);
+  }
+})();
+</script>
+</div>

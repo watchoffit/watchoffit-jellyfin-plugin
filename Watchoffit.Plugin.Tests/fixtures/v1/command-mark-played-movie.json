@@ -1,0 +1,25 @@
+{
+  "kind": "command",
+  "header": {
+    "version": 1,
+    "kind": "command",
+    "id": "cmd_01HZ0001",
+    "sequence": 1,
+    "timestamp": "2026-08-26T20:34:41.000Z",
+    "serverConnectionId": "scn_01HZ0001",
+    "capabilities": {
+      "minProtocolVersion": 1,
+      "maxProtocolVersion": 1,
+      "maxPayloadBytes": 65536,
+      "maxBatchSize": 50
+    }
+  },
+  "payload": {
+    "kind": "mark_played",
+    "jellyfinItemId": "jf-movie-1",
+    "watchoffitUserId": "u_01HZ0001",
+    "mediaKind": "movie",
+    "providerIds": { "tmdb": "603", "imdb": "tt0133093" },
+    "watchedAt": "2026-08-26T20:34:00.000Z"
+  }
+}
