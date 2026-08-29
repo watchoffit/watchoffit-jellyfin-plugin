@@ -1,0 +1,23 @@
+{
+  "connected": "Подключено",
+  "connectedAt": "Подключено",
+  "connectToWatchoffit": "Подключить к Watchoffit",
+  "connectionFailed": "Не удалось подключиться: {0}",
+  "connectionId": "Идентификатор подключения",
+  "connectionString": "Строка подключения Watchoffit",
+  "connectionStringHint": "Скопируйте строку подключения из Watchoffit. Она действует 10 минут.",
+  "connectionStringRequired": "Вставьте строку подключения из Watchoffit",
+  "credential": "Учетные данные",
+  "disconnect": "Отключить",
+  "disconnectFailed": "Не удалось отключить: {0}",
+  "failedToLoadStatus": "Не удалось загрузить статус подключения: HTTP {0}",
+  "networkError": "Ошибка сети: {0}",
+  "pluginProtocol": "Протокол v1. Плагин",
+  "server": "Сервер",
+  "watchoffitServer": "Сервер Watchoffit",
+  "watchoffitServerUrl": "URL сервера Watchoffit",
+  "status": "Статус",
+  "loading": "Загрузка...",
+  "docs": "документацию",
+  "protocolDescription": "о формате обмена и модели безопасности."
+}

@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Restore
+        run: dotnet restore Jellyfin.Plugin.Watchoffit.sln
+
+      - name: Test
+        run: dotnet test Jellyfin.Plugin.Watchoffit.sln -c Release --no-restore
+
+      - name: Build package layout
+        run: |
+          set -euo pipefail
+          version="$(grep -m1 '<Version>' Directory.Build.props | sed -E 's/.*<Version>([^<]+)<.*/\1/')"
+          package_dir="artifacts/package"
+          zip_name="watchoffit-jellyfin_${version}_jellyfin-10.11_net9.0.zip"
+
+          rm -rf artifacts
+          mkdir -p "$package_dir"
+          cp "Jellyfin.Plugin.Watchoffit/bin/Release/net9.0/Jellyfin.Plugin.Watchoffit.dll" "$package_dir/"
+          cp meta.json "$package_dir/"
+          cp assets/watchoffit.png "$package_dir/watchoffit.png"
+
+          forbidden="$(find "$package_dir" -type f \( \
+            \( -name 'Jellyfin.*.dll' ! -name 'Jellyfin.Plugin.Watchoffit.dll' \) \
+            -o -name 'MediaBrowser.*.dll' \
+            -o -name 'Microsoft.Extensions.*.dll' \
+            -o -name '*.deps.json' \
+            -o -name '*.runtimeconfig.json' \
+            -o -name '*.pdb' \
+          \) -print)"
+          test -z "$forbidden"
+
+          (cd "$package_dir" && zip -qr "../$zip_name" .)
+
+      - name: Validate plugin metadata
+        run: |
+          set -euo pipefail
+          test "$(jq -r '.guid' meta.json)" = "ed8e9c41-2e0f-5872-93f2-06feb1bc37d1"
+          test "$(jq -r '.version' meta.json)" = "$(grep -m1 '<Version>' Directory.Build.props | sed -E 's/.*<Version>([^<]+)<.*/\1/')"
+          jq empty manifest.json
+          jq empty manifest-preview.json

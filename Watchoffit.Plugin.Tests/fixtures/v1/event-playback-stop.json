@@ -1,0 +1,22 @@
+{
+  "kind": "event",
+  "header": {
+    "version": 1,
+    "kind": "event",
+    "id": "evt_01HZ0003",
+    "sequence": 3,
+    "timestamp": "2026-08-26T20:30:00.000Z",
+    "serverConnectionId": "scn_01HZ0001"
+  },
+  "payload": {
+    "kind": "playback_stop",
+    "jellyfinItemId": "jf-movie-1",
+    "watchoffitUserId": "u_01HZ0001",
+    "mediaKind": "movie",
+    "sessionId": "sess_01HZ0001",
+    "positionTicks": 7200000000,
+    "runtimeTicks": 7200000000,
+    "playedToCompletion": true,
+    "stoppedAt": "2026-08-26T20:30:00.000Z"
+  }
+}

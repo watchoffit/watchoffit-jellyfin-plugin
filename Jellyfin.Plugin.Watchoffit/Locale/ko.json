@@ -1,0 +1,23 @@
+{
+  "connected": "연결됨",
+  "connectedAt": "연결 시간",
+  "connectToWatchoffit": "Watchoffit에 연결",
+  "connectionFailed": "연결 실패: {0}",
+  "connectionId": "연결 ID",
+  "connectionString": "Watchoffit 연결 문자열",
+  "connectionStringHint": "Watchoffit에서 연결 문자열을 복사하세요. 10분 후 만료됩니다.",
+  "connectionStringRequired": "Watchoffit 연결 문자열을 붙여 넣으세요",
+  "credential": "자격 증명",
+  "disconnect": "연결 해제",
+  "disconnectFailed": "연결 해제 실패: {0}",
+  "failedToLoadStatus": "페어링 상태를 불러오지 못했습니다: HTTP {0}",
+  "networkError": "네트워크 오류: {0}",
+  "pluginProtocol": "프로토콜 v1 플러그인",
+  "server": "서버",
+  "watchoffitServer": "Watchoffit 서버",
+  "watchoffitServerUrl": "Watchoffit 서버 URL",
+  "status": "상태",
+  "loading": "로드 중...",
+  "docs": "문서",
+  "protocolDescription": "통신 형식 및 보안 모델 안내."
+}

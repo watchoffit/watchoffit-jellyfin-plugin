@@ -1,0 +1,143 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*.*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Validate tag version
+        run: |
+          set -euo pipefail
+          tag="${GITHUB_REF_NAME#v}"
+          version="$(grep -m1 '<Version>' Directory.Build.props | sed -E 's/.*<Version>([^<]+)<.*/\1/')"
+          test "$tag" = "$version"
+          test "$(jq -r '.version' meta.json)" = "$version"
+
+      - name: Restore
+        run: dotnet restore Jellyfin.Plugin.Watchoffit.sln
+
+      - name: Test
+        run: dotnet test Jellyfin.Plugin.Watchoffit.sln -c Release --no-restore
+
+      - name: Package
+        run: |
+          set -euo pipefail
+          version="${GITHUB_REF_NAME#v}"
+          package_dir="artifacts/package"
+          zip_name="watchoffit-jellyfin_${version}_jellyfin-10.11_net9.0.zip"
+
+          rm -rf artifacts
+          mkdir -p "$package_dir"
+          cp "Jellyfin.Plugin.Watchoffit/bin/Release/net9.0/Jellyfin.Plugin.Watchoffit.dll" "$package_dir/"
+          cp meta.json "$package_dir/"
+          cp assets/watchoffit.png "$package_dir/watchoffit.png"
+
+          forbidden="$(find "$package_dir" -type f \( \
+            \( -name 'Jellyfin.*.dll' ! -name 'Jellyfin.Plugin.Watchoffit.dll' \) \
+            -o -name 'MediaBrowser.*.dll' \
+            -o -name 'Microsoft.Extensions.*.dll' \
+            -o -name '*.deps.json' \
+            -o -name '*.runtimeconfig.json' \
+            -o -name '*.pdb' \
+          \) -print)"
+          test -z "$forbidden"
+
+          (cd "$package_dir" && zip -qr "../$zip_name" .)
+          (cd artifacts && md5sum "$zip_name" > checksums.md5)
+          (cd artifacts && sha256sum "$zip_name" > checksums.sha256)
+
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          version="${GITHUB_REF_NAME#v}"
+          zip_name="watchoffit-jellyfin_${version}_jellyfin-10.11_net9.0.zip"
+          gh release create "$GITHUB_REF_NAME" \
+            "artifacts/$zip_name" \
+            artifacts/checksums.md5 \
+            artifacts/checksums.sha256 \
+            --title "Watchoffit Jellyfin Plugin $version" \
+            --notes "Watchoffit Jellyfin Plugin $version"
+
+      - name: Update Jellyfin manifest
+        run: |
+          set -euo pipefail
+          version="${GITHUB_REF_NAME#v}"
+          zip_name="watchoffit-jellyfin_${version}_jellyfin-10.11_net9.0.zip"
+          checksum="$(cut -d ' ' -f1 artifacts/checksums.md5)"
+          timestamp="$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+          source_url="https://github.com/${GITHUB_REPOSITORY}/releases/download/${GITHUB_REF_NAME}/${zip_name}"
+          image_url="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/main/assets/watchoffit.png"
+
+          jq -n \
+            --arg category "Sync" \
+            --arg name "Watchoffit" \
+            --arg description "Connects Jellyfin to Watchoffit for watched state, resume progress, library inventory, backfill, reconciliation, and outbound watched or unwatched commands without the Webhook plugin, Jellyfin API keys, or Quick Connect." \
+            --arg overview "Sync Jellyfin watch activity and library state with Watchoffit." \
+            --arg owner "watchoffit" \
+            --arg guid "ed8e9c41-2e0f-5872-93f2-06feb1bc37d1" \
+            --arg imageUrl "$image_url" \
+            --arg version "$version" \
+            --arg changelog "Watchoffit Jellyfin Plugin ${version}." \
+            --arg targetAbi "10.11.0.0" \
+            --arg sourceUrl "$source_url" \
+            --arg checksum "$checksum" \
+            --arg timestamp "$timestamp" \
+            '{
+              category: $category,
+              name: $name,
+              description: $description,
+              overview: $overview,
+              owner: $owner,
+              guid: $guid,
+              imageUrl: $imageUrl,
+              versions: [{
+                version: $version,
+                changelog: $changelog,
+                targetAbi: $targetAbi,
+                sourceUrl: $sourceUrl,
+                checksum: $checksum,
+                timestamp: $timestamp
+              }]
+            }' > /tmp/watchoffit-manifest-entry.json
+
+          jq --slurpfile entry /tmp/watchoffit-manifest-entry.json '
+            ($entry[0]) as $pkg |
+            if any(.[]; .guid == $pkg.guid) then
+              map(if .guid == $pkg.guid then
+                . + {
+                  versions: (
+                    $pkg.versions + ((.versions // []) | map(select(.version != $pkg.versions[0].version)))
+                  )
+                }
+              else . end)
+            else
+              . + [$pkg]
+            end
+          ' manifest.json > /tmp/watchoffit-manifest.json
+
+          git fetch origin main:refs/remotes/origin/main
+          git switch -C main origin/main
+          mv /tmp/watchoffit-manifest.json manifest.json
+          jq empty manifest.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add manifest.json
+          git commit -m "Update Jellyfin plugin manifest for ${GITHUB_REF_NAME}"
+          git push origin main

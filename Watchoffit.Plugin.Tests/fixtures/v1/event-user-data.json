@@ -1,0 +1,21 @@
+{
+  "kind": "event",
+  "header": {
+    "version": 1,
+    "kind": "event",
+    "id": "evt_01HZ0004",
+    "sequence": 4,
+    "timestamp": "2026-08-26T20:31:00.000Z",
+    "serverConnectionId": "scn_01HZ0001"
+  },
+  "payload": {
+    "kind": "user_data",
+    "jellyfinItemId": "jf-movie-1",
+    "watchoffitUserId": "u_01HZ0001",
+    "mediaKind": "movie",
+    "played": true,
+    "playCount": 2,
+    "isFavorite": false,
+    "lastPlayedAt": "2026-08-26T19:00:00.000Z"
+  }
+}

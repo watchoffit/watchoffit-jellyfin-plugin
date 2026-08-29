@@ -1,0 +1,23 @@
+{
+  "connected": "已连接",
+  "connectedAt": "连接时间",
+  "connectToWatchoffit": "连接到 Watchoffit",
+  "connectionFailed": "连接失败：{0}",
+  "connectionId": "连接 ID",
+  "connectionString": "Watchoffit 连接字符串",
+  "connectionStringHint": "从 Watchoffit 复制连接字符串。10 分钟后过期。",
+  "connectionStringRequired": "粘贴 Watchoffit 的连接字符串",
+  "credential": "凭据",
+  "disconnect": "断开连接",
+  "disconnectFailed": "断开连接失败：{0}",
+  "failedToLoadStatus": "无法加载配对状态：HTTP {0}",
+  "networkError": "网络错误：{0}",
+  "pluginProtocol": "协议 v1 插件",
+  "server": "服务器",
+  "watchoffitServer": "Watchoffit 服务器",
+  "watchoffitServerUrl": "Watchoffit 服务器 URL",
+  "status": "状态",
+  "loading": "加载中...",
+  "docs": "文档",
+  "protocolDescription": "了解通信格式和安全模型。"
+}

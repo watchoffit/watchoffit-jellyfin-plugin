@@ -1,0 +1,16 @@
+{
+  "category": "Sync",
+  "name": "Watchoffit",
+  "description": "Sync your Jellyfin playback with Watchoffit in real time, without API keys or webhooks.",
+  "overview": "Pairs a Jellyfin server with a Watchoffit instance over a dedicated protocol. Once paired, Jellyfin playback events, watched state, library inventory, backfill, reconciliation, and outbound watched or unwatched changes stay in sync with Watchoffit.",
+  "owner": "watchoffit",
+  "guid": "ed8e9c41-2e0f-5872-93f2-06feb1bc37d1",
+  "imagePath": "watchoffit.png",
+  "version": "1.0.0.0",
+  "targetAbi": "10.11.0.0",
+  "status": "Active",
+  "autoUpdate": false,
+  "assemblies": [
+    "Jellyfin.Plugin.Watchoffit.dll"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "connected": "Verbunden",
+  "connectedAt": "Verbunden am",
+  "connectToWatchoffit": "Mit Watchoffit verbinden",
+  "connectionFailed": "Verbindung fehlgeschlagen: {0}",
+  "connectionId": "Verbindungs-ID",
+  "connectionString": "Watchoffit-Verbindungszeichenfolge",
+  "connectionStringHint": "Kopiere die Verbindungszeichenfolge aus Watchoffit. Sie läuft nach 10 Minuten ab.",
+  "connectionStringRequired": "Verbindungszeichenfolge aus Watchoffit einfügen",
+  "credential": "Anmeldedaten",
+  "disconnect": "Trennen",
+  "disconnectFailed": "Trennen fehlgeschlagen: {0}",
+  "failedToLoadStatus": "Kopplungsstatus konnte nicht geladen werden: HTTP {0}",
+  "networkError": "Netzwerkfehler: {0}",
+  "pluginProtocol": "Plugin für Protokoll v1",
+  "server": "Server",
+  "watchoffitServer": "Watchoffit-Server",
+  "watchoffitServerUrl": "URL des Watchoffit-Servers",
+  "status": "Status",
+  "loading": "Wird geladen...",
+  "docs": "Dokumentation",
+  "protocolDescription": "für Datenformat und Sicherheitsmodell."
+}

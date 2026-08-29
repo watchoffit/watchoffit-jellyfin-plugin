@@ -1,0 +1,24 @@
+{
+  "kind": "command",
+  "header": {
+    "version": 1,
+    "kind": "command",
+    "id": "cmd_challenge_01HZ0001",
+    "sequence": 1,
+    "timestamp": "2026-08-27T10:01:00.000Z",
+    "serverConnectionId": "pending",
+    "capabilities": {
+      "minProtocolVersion": 1,
+      "maxProtocolVersion": 1,
+      "maxPayloadBytes": 65536,
+      "maxBatchSize": 50
+    }
+  },
+  "payload": {
+    "kind": "challenge_request",
+    "jellyfinServerId": "jf_server_01HZ0001LOCAL",
+    "jellyfinVersion": "10.11.11",
+    "pluginVersion": "1.0.0.0",
+    "pluginGuid": "ed8e9c41-2e0f-5872-93f2-06feb1bc37d1"
+  }
+}

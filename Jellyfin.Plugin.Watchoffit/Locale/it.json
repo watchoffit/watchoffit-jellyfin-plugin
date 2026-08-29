@@ -1,0 +1,23 @@
+{
+  "connected": "Connesso",
+  "connectedAt": "Connesso il",
+  "connectToWatchoffit": "Connetti a Watchoffit",
+  "connectionFailed": "Connessione non riuscita: {0}",
+  "connectionId": "ID connessione",
+  "connectionString": "Stringa di connessione Watchoffit",
+  "connectionStringHint": "Copia la stringa di connessione da Watchoffit. Scade dopo 10 minuti.",
+  "connectionStringRequired": "Incolla la stringa di connessione da Watchoffit",
+  "credential": "Credenziale",
+  "disconnect": "Disconnetti",
+  "disconnectFailed": "Disconnessione non riuscita: {0}",
+  "failedToLoadStatus": "Impossibile caricare lo stato di associazione: HTTP {0}",
+  "networkError": "Errore di rete: {0}",
+  "pluginProtocol": "Plugin del protocollo v1",
+  "server": "Server",
+  "watchoffitServer": "Server Watchoffit",
+  "watchoffitServerUrl": "URL del server Watchoffit",
+  "status": "Stato",
+  "loading": "Caricamento...",
+  "docs": "documentazione",
+  "protocolDescription": "per il formato dei dati e il modello di sicurezza."
+}

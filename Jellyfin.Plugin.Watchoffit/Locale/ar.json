@@ -1,0 +1,23 @@
+{
+  "connected": "متصل",
+  "connectedAt": "تم الاتصال في",
+  "connectToWatchoffit": "الاتصال بـ Watchoffit",
+  "connectionFailed": "فشل الاتصال: {0}",
+  "connectionId": "معرّف الاتصال",
+  "connectionString": "سلسلة اتصال Watchoffit",
+  "connectionStringHint": "انسخ سلسلة الاتصال من Watchoffit. تنتهي صلاحيتها بعد 10 دقائق.",
+  "connectionStringRequired": "ألصق سلسلة الاتصال من Watchoffit",
+  "credential": "بيانات الاعتماد",
+  "disconnect": "قطع الاتصال",
+  "disconnectFailed": "فشل قطع الاتصال: {0}",
+  "failedToLoadStatus": "تعذر تحميل حالة الاقتران: HTTP {0}",
+  "networkError": "خطأ في الشبكة: {0}",
+  "pluginProtocol": "إضافة بروتوكول v1",
+  "server": "الخادم",
+  "watchoffitServer": "خادم Watchoffit",
+  "watchoffitServerUrl": "عنوان خادم Watchoffit",
+  "status": "الحالة",
+  "loading": "جار التحميل...",
+  "docs": "الوثائق",
+  "protocolDescription": "لتنسيق البيانات ونموذج الأمان."
+}
