@@ -38,6 +38,19 @@ The connection string is short-lived. If it expires, create a new one in Watchof
 
 Jellyfin checks the Watchoffit plugin repository for compatible releases. Install updates from **Dashboard** -> **Plugins** when Jellyfin shows a new Watchoffit version.
 
+## Release
+
+Run a patch release from a clean `main` branch:
+
+```bash
+scripts/release.sh patch
+```
+
+The script bumps `Directory.Build.props`, `meta.json`, and `build.yaml`, commits
+the version bump, pushes `main`, creates the matching `v*.*.*.*` tag, and pushes
+the tag. The GitHub Actions release workflow then builds the plugin ZIP,
+publishes the GitHub release, and updates `manifest.json`.
+
 ## License
 
 GPL-3.0. See [LICENSE](LICENSE).
