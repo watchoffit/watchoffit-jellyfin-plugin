@@ -84,6 +84,7 @@ public sealed class WatchoffitPluginServiceRegistrator : IPluginServiceRegistrat
         // Hosted services start in registration order. Rehydrate the durable
         // pairing before any queue or event subscription can observe it.
         serviceCollection.AddHostedService<PairingStartupService>();
+        serviceCollection.AddHostedService<HeartbeatService>();
 
         // Phase 5 — durable event outbox. The forwarder only persists event
         // envelopes; the background worker is the sole owner of network I/O.

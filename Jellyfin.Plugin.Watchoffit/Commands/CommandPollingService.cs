@@ -149,7 +149,6 @@ public sealed class CommandPollingService : BackgroundService
         switch (result)
         {
             case WatchoffitCallResult.Ack ack:
-                _pairing.MarkContactSucceeded(DateTimeOffset.UtcNow);
                 await HandlePollAckAsync(connection, ack.Envelope, cancellationToken).ConfigureAwait(false);
                 break;
 
@@ -161,7 +160,7 @@ public sealed class CommandPollingService : BackgroundService
                 break;
 
             case WatchoffitCallResult.TransportFailure failure:
-                HandleTransportFailure(failure);
+                HandleTransportFailure(connection, failure);
                 break;
 
             default:
@@ -305,7 +304,7 @@ public sealed class CommandPollingService : BackgroundService
         }
     }
 
-    private void HandleTransportFailure(WatchoffitCallResult.TransportFailure failure)
+    private void HandleTransportFailure(WatchoffitConnection connection, WatchoffitCallResult.TransportFailure failure)
     {
         if (failure.StatusCode is (int)HttpStatusCode.Unauthorized or (int)HttpStatusCode.Forbidden)
         {
@@ -319,7 +318,8 @@ public sealed class CommandPollingService : BackgroundService
                 failure.StatusCode,
                 failure.Reason);
             _pairing.MarkRevokedFromRemote(
-                $"command poll HTTP {failure.StatusCode}: {failure.Reason}");
+                $"command poll HTTP {failure.StatusCode}: {failure.Reason}",
+                connection.ServerConnectionId);
             return;
         }
 

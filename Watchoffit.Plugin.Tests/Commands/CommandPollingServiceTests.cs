@@ -154,6 +154,17 @@ public sealed class CommandPollingServiceTests : IDisposable
     }
 
     [Fact]
+    public async Task PollOnceAsync_SuccessfulPoll_DoesNotUpdateLastPingAt()
+    {
+        SeedPairedConnection(lastPingAt: string.Empty);
+        EnqueueEmptyPollResponse();
+
+        await _service.PollOnceAsync(CancellationToken.None);
+
+        Assert.Equal(string.Empty, _pairing.CurrentConnection?.LastPingAt);
+    }
+
+    [Fact]
     public async Task PollOnceAsync_UnauthorizedResponse_MarksPairingRevoked()
     {
         SeedPairedConnection();
@@ -253,7 +264,7 @@ public sealed class CommandPollingServiceTests : IDisposable
                 pollInterval: TimeSpan.Zero));
     }
 
-    private void SeedPairedConnection()
+    private void SeedPairedConnection(string lastPingAt = "")
     {
         _store.Save(new WatchoffitConnection
         {
@@ -263,6 +274,7 @@ public sealed class CommandPollingServiceTests : IDisposable
             WatchoffitServerName = "Watchoffit",
             JellyfinServerId = "jf_server_01",
             Credential = new WatchoffitCredential { Scheme = "plain", Value = "cred_test" },
+            LastPingAt = lastPingAt,
         });
         _pairing.LoadFromStore();
     }

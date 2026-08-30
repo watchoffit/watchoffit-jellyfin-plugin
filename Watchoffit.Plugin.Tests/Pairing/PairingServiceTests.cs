@@ -177,6 +177,48 @@ public sealed class PairingServiceTests : IDisposable
 
         Assert.Equal(PairingState.None, service.CurrentState);
     }
+
+    [Fact]
+    public void MarkRevokedFromRemote_StaleServerConnectionId_LeavesCurrentPairingIntact()
+    {
+        var service = NewServiceWithPairedConnection("scn_current");
+
+        service.MarkRevokedFromRemote("stale heartbeat HTTP 401", "scn_old");
+
+        Assert.Equal(PairingState.Paired, service.CurrentState);
+        Assert.Equal("scn_current", service.CurrentConnection?.ServerConnectionId);
+    }
+
+    [Fact]
+    public void MarkRevokedFromRemote_MatchingServerConnectionId_DropsCurrentPairing()
+    {
+        var service = NewServiceWithPairedConnection("scn_current");
+
+        service.MarkRevokedFromRemote("heartbeat HTTP 401", "scn_current");
+
+        Assert.Equal(PairingState.None, service.CurrentState);
+        Assert.Null(service.CurrentConnection);
+    }
+
+    private PairingService NewServiceWithPairedConnection(string serverConnectionId)
+    {
+        var store = NewStore();
+        store.Save(new WatchoffitConnection
+        {
+            State = PairingState.Paired,
+            BaseUrl = "https://watchoffit.example.com",
+            ServerConnectionId = serverConnectionId,
+            Credential = new WatchoffitCredential { Scheme = "plain", Value = "cred_current" },
+        });
+
+        var (client, _) = NewClient();
+        var builder = new V1EnvelopeBuilder();
+        var systemInfo = new StaticJellyfinSystemInfoProvider("jf_server_01", "10.11.11");
+        var watchoffitClient = new WatchoffitClient(client, builder, systemInfo, NullLogger<WatchoffitClient>.Instance);
+        var service = new PairingService(store, watchoffitClient, systemInfo, NullLogger<PairingService>.Instance);
+        service.LoadFromStore();
+        return service;
+    }
 }
 
 /// <summary>

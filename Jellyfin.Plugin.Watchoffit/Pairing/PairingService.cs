@@ -322,18 +322,29 @@ public sealed class PairingService
     /// the credential manually (or via a fresh pairing flow).
     /// </summary>
     /// <param name="reason">Short diagnostic surfaced to the plugin log; never includes the credential value.</param>
-    public void MarkRevokedFromRemote(string reason)
+    /// <param name="expectedServerConnectionId">Server connection id from the request that was rejected.</param>
+    public void MarkRevokedFromRemote(string reason, string expectedServerConnectionId)
     {
         ArgumentException.ThrowIfNullOrEmpty(reason);
+        ArgumentException.ThrowIfNullOrEmpty(expectedServerConnectionId);
 
         _stateLock.Wait();
         try
         {
-            if (_currentState == PairingState.None)
+            if (_currentState == PairingState.None || _currentConnection is null)
             {
                 // Already forgotten — the operator may have repaired
                 // the state between the poll and the mark. Logging
                 // the no-op is noisy and unhelpful.
+                return;
+            }
+
+            if (!string.Equals(_currentConnection.ServerConnectionId, expectedServerConnectionId, StringComparison.Ordinal))
+            {
+                _logger.LogInformation(
+                    "Watchoffit rejected stale pairing {RejectedServer}; current pairing is {CurrentServer}, so local state was left intact",
+                    expectedServerConnectionId,
+                    _currentConnection.ServerConnectionId);
                 return;
             }
 
