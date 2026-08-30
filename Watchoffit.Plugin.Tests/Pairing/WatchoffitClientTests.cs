@@ -143,6 +143,23 @@ public sealed class WatchoffitClientTests
     }
 
     [Fact]
+    public async Task HttpFailure_WithNonEnvelopeJson_ReturnsTransportFailure()
+    {
+        var (client, handler) = NewClient("https://watchoffit.test/");
+        handler.Enqueue(new HttpResponseMessage(HttpStatusCode.BadGateway)
+        {
+            Content = new StringContent("{\"ok\":false}", Encoding.UTF8, "application/json"),
+        });
+
+        var result = await NewServiceClient(client).PingAsync(
+            "https://watchoffit.test", "scn_01", "cred_x", CancellationToken.None);
+
+        var failure = Assert.IsType<WatchoffitCallResult.TransportFailure>(result);
+        Assert.Equal(502, failure.StatusCode);
+        Assert.Equal("HTTP 502", failure.Reason);
+    }
+
+    [Fact]
     public async Task HttpFailure_WithErrorEnvelope_ReturnsApplicationError()
     {
         var (client, handler) = NewClient("https://watchoffit.test/");

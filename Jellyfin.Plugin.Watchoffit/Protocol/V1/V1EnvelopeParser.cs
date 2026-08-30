@@ -114,7 +114,7 @@ public static class V1EnvelopeParser
             envelope = JsonSerializer.Deserialize<V1Envelope>(root.GetRawText(), SerializerOptions)
                 ?? throw new JsonException("Deserializer returned null");
         }
-        catch (JsonException ex)
+        catch (Exception ex) when (ex is JsonException or NotSupportedException)
         {
             return new V1ParseResult.Failure(
                 SafeErrorCode.InvalidEnvelope,
