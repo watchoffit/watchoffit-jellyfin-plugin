@@ -1,11 +1,11 @@
 ---
 name: "Watchoffit"
 guid: "ed8e9c41-2e0f-5872-93f2-06feb1bc37d1"
-version: "1.0.1.0"
+version: "1.0.2.0"
 targetAbi: "10.11.0.0"
 framework: "net9.0"
 overview: "Sync your Jellyfin playback with Watchoffit in real time, without API keys or webhooks."
-imageUrl: "https://raw.githubusercontent.com/watchoffit/watchoffit-jellyfin-plugin/v1.0.1.0/assets/watchoffit.png"
+imageUrl: "https://raw.githubusercontent.com/watchoffit/watchoffit-jellyfin-plugin/v1.0.2.0/assets/watchoffit.png"
 description: >
   Pairs a Jellyfin server with a Watchoffit instance over a custom protocol. Once
   paired, every playback_start / playback_progress / playback_stop / user_data

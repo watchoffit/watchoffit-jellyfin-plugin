@@ -6,7 +6,7 @@
   "owner": "watchoffit",
   "guid": "ed8e9c41-2e0f-5872-93f2-06feb1bc37d1",
   "imagePath": "watchoffit.png",
-  "version": "1.0.1.0",
+  "version": "1.0.2.0",
   "targetAbi": "10.11.0.0",
   "status": "Active",
   "autoUpdate": false,
